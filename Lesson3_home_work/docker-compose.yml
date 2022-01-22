@@ -1,0 +1,27 @@
+version: '2.2'
+services:
+  back:
+    image: back
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    links:
+      - db
+  db:
+    image: postgres
+    volumes:
+      - /var/test-volume:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_USER=django
+      - POSTGRES_PASSWORD=django
+      - POSTGRES_DB=django
+    hostname: database
+  front:
+    image: front
+    stdin_open: true 
+    tty: true
+    ports:
+      - "3000:3000"
+    links:
+      - back
